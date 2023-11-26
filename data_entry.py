@@ -1,15 +1,21 @@
 from pathlib import Path
 import PySimpleGUI as sg
 import pandas as pd
+import os
+import sys
 
 # Add some color to the window
 sg.theme('DarkTeal9')
 
-current_dir = Path(__file__).parent if '__file__' in locals() else Path.cwd()
-EXCEL_FILE = current_dir / 'Data_Entry.xlsx'
+if getattr(sys, 'frozen', False):
+    application_path = os.path.dirname(os.path.realpath(sys.executable))
+elif __file__:
+    application_path = os.path.dirname(__file__)
+
+EXCEL_FILE = os.path.join(application_path, 'Data_Entry.xlsx')
 
 # Load the data if the file exists, if not, create a new DataFrame
-if EXCEL_FILE.exists():
+if os.path.isfile(EXCEL_FILE):
     df = pd.read_excel(EXCEL_FILE)
 else:
     df = pd.DataFrame()
